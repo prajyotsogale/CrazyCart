@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Shopping Site</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+
+</head>
+<!-- Set body to dark background and allow text color to be overridden by fragment/main content -->
+<body class="bg-slate-900 flex flex-col min-h-screen">
+
+<!-- Header Fragment Inclusion -->
+<header th:replace="fragments/header :: header"></header>
+
+<!-- Profile Content: Light gray background for the main content area for contrast -->
+<main class="flex-grow flex justify-center p-4 sm:p-6 lg:p-8 bg-gray-100">
+
+    <!-- Profile Card Container - Changed to white background with dark text -->
+    <div class="w-full max-w-4xl bg-white text-slate-900 shadow-xl rounded-2xl overflow-hidden border border-gray-200">
+
+        <!-- Header - Kept bg-sky-500 as the accent color -->
+        <div class="bg-slate-900 p-6 sm:p-8">
+            <h1 class="text-3xl font-bold text-white text-center">My Profile Information</h1>
+        </div>
+
+        <!-- Form Section -->
+        <form
+                th:action="@{/profile/update}"
+                th:object="${profile}"
+                method="post"
+                class="p-6 sm:p-8 lg:p-10 space-y-8"
+        >
+
+            <!-- Hidden ID Field for Update -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Profile Image and Basic Info Section -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-6 sm:space-y-0 sm:space-x-8 border-b border-gray-200 pb-6">
+
+                <!-- Profile Image Display -->
+                <div class="flex-shrink-0">
+                    <img
+                            th:src="@{*{profileImage} != null ? *{profileImage} : 'https://placehold.co/128x128/9CA3AF/FFFFFF?text=P'}"
+                            alt="Profile Image"
+                            class="h-32 w-32 object-cover rounded-full border-4 border-slate-900 shadow-lg"
+                            onerror="this.onerror=null; this.src='https://placehold.co/128x128/9CA3AF/FFFFFF?text=P';"
+                    />
+                </div>
+
+                <!-- Username and Email (Read-Only/Users data) -->
+                <div class="flex-grow space-y-1">
+                    <!-- Adjusted text colors for light background -->
+                    <p class="text-xs font-semibold uppercase text-gray-500">Associated Username</p>
+                    <p class="text-2xl font-extrabold text-gray-900"
+                       th:text="${profile.users.username}"></p>
+
+                    <p class="text-md text-gray-600" th:text="${profile.email}"></p>
+                    <p class="text-sm text-gray-400 mt-1">Fields below can be updated.</p>
+                </div>
+            </div>
+
+            <!-- Profile Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Full Name Field -->
+                <div>
+                    <!-- Adjusted label color -->
+                    <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input
+                            type="text"
+                            id="fullName"
+                            th:field="*{fullName}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-slate-900
+                                   focus:ring-sky-500 focus:border-sky-500 transition duration-150"
+                            placeholder="e.g., Jane Doe"
+                            required
+                    />
+                </div>
+
+                <!-- Phone Field -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input
+                            type="tel"
+                            id="phone"
+                            th:field="*{phone}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-slate-900
+                                   focus:ring-sky-500 focus:border-sky-500 transition duration-150"
+                            placeholder="e.g., 555-123-4567"
+                    />
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address (Profile Specific)</label>
+                    <input
+                            type="email"
+                            id="email"
+                            th:field="*{email}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-slate-900
+                                   focus:ring-sky-500 focus:border-sky-500 transition duration-150"
+                            placeholder="e.g., name@example.com"
+                            required
+                    />
+                </div>
+
+                <!-- Profile Image URL Field -->
+                <div>
+                    <label for="profileImage" class="block text-sm font-medium text-gray-700 mb-1">Profile Image URL</label>
+                    <input
+                            type="url"
+                            id="profileImage"
+                            th:field="*{profileImage}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-slate-900
+                                   focus:ring-sky-500 focus:border-sky-500 transition duration-150"
+                            placeholder="Paste image URL here"
+                    />
+                    <p class="text-xs text-gray-500 mt-1">Paste a direct link to your profile picture.</p>
+                </div>
+
+            </div>
+
+            <!-- Address Field (Full Width) -->
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Shipping Address</label>
+                <textarea
+                        id="address"
+                        th:field="*{address}"
+                        rows="3"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-slate-900
+                               focus:ring-sky-500 focus:border-sky-500 transition duration-150"
+                        placeholder="Enter your complete shipping address (Street, City, Zip, Country)"
+                ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end pt-4">
+                <button
+                        type="submit"
+                        class="px-8 py-3 bg-slate-900 text-white font-semibold rounded-lg shadow-lg hover:bg-sky-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-white"
+                >
+                    Update Profile
+                </button>
+            </div>
+
+<!--            &lt;!&ndash; Success/Error Message Placeholder - Adjusted for light mode &ndash;&gt;-->
+<!--            <div th:if="${param.success}" class="text-green-600 font-medium p-3 bg-green-50 rounded-lg text-center border border-green-200">-->
+<!--                Profile updated successfully!-->
+<!--            </div>-->
+<!--            <div th:if="${param.error}" class="text-red-600 font-medium p-3 bg-red-50 rounded-lg text-center border border-red-200">-->
+<!--                An error occurred during update. Please try again.-->
+<!--            </div>-->
+
+        </form>
+    </div>
+
+</main>
+
+<!-- Footer Fragment Inclusion -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

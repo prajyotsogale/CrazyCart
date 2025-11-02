@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body class="text-slate-900">
+<th:block th:fragment="header">
+    <!-- Load required scripts if not loaded in parent page -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <header class="bg-slate-900 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-2xl font-extrabold text-white tracking-tight flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1v-3.25m-7.25 0h12.5m-12.5 0V7a2 2 0 012-2h8a2 2 0 012 2v10m-2 0h-8m8-5H7"></path></svg>
+                        CrazyCart
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a th:href="@{/products(category='Laptops')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Laptops</a>
+                    <a th:href="@{/products(category='Speakers')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Speakers</a>
+                    <a th:href="@{/products(category='Mobiles')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Mobiles</a>
+                    <a th:href="@{/products(category='Accessories')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Accessories</a>
+                    <a th:href="@{/products(category='Cameras')}" class="text-gray-300 hover:text-sky-400 transition duration-150">Cameras</a>
+                </nav>
+
+                <!-- Search/User Icons & Login/Profile -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search Icon (Toggles Search Overlay) -->
+                    <button id="search-button" class="text-gray-300 hover:text-sky-400 p-2 rounded-full transition duration-150 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+
+                    <!-- Cart Icon -->
+                    <button class="text-gray-300 hover:text-sky-400 p-2 rounded-full transition duration-150 relative focus:outline-none">
+                        <a th:href="@{/cart}">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+<!--                            <span class="absolute top-1 right-1 bg-red-600 text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>-->
+                        </a>
+                    </button>
+
+                    <!-- PROFILE: show when authenticated using sec:authorize -->
+                    <div sec:authorize="isAuthenticated()" class="relative">
+                        <button id="profileButton" class="flex items-center space-x-2 text-gray-300 hover:text-sky-400 focus:outline-none">
+                            <img th:src="${theUserProfile.profileImage}"
+                                 alt="User" class="w-8 h-8 rounded-full border-2 border-sky-400 object-cover">
+                            <span class="hidden lg:inline text-sm font-medium" sec:authentication="name">User</span>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 z-50">
+                            <a th:href="@{/profile}" class="block px-4 py-2 text-slate-700 hover:bg-slate-100">My Profile</a>
+                            <a th:href="@{/orders}" class="block px-4 py-2 text-slate-700 hover:bg-slate-100">My Orders</a>
+                            <a th:href="@{/settings}" class="block px-4 py-2 text-slate-700 hover:bg-slate-100">Account Settings</a>
+                            <div class="border-t border-slate-200 my-1"></div>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-slate-100">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- If NOT logged in -->
+                    <div sec:authorize="isAnonymous()">
+                        <a th:href="@{/showMyLoginPage}" class="bg-sky-500 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-sky-600">
+                            Login / Register
+                        </a>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-sky-400 focus:outline-none p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 pb-3">
+            <a th:href="@{/products(category='Laptops')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Laptops</a>
+            <a th:href="@{/products(category='Speakers')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Speakers</a>
+            <a th:href="@{/products(category='Mobiles')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Mobiles</a>
+            <a th:href="@{/products(category='Accessories')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Accessories</a>
+            <a th:href="@{/products(category='Cameras')}" class="block px-4 py-2 text-base font-medium text-gray-300 hover:bg-slate-700">Cameras</a>
+            <!-- Added login/profile options to mobile menu -->
+
+            <hr class="border-slate-700 mx-4 my-2">
+
+            <!-- Show login for anonymous users -->
+            <div sec:authorize="isAnonymous()" class="px-4">
+                <a href="#" th:href="@{/showMyLoginPage}" id="mobile-login-button" class="block px-4 py-2 text-base font-medium text-sky-400 hover:bg-slate-700">Login / Sign Up</a>
+            </div>
+
+            <!-- Show profile links for authenticated users -->
+            <div sec:authorize="isAuthenticated()" class="px-4">
+                <a th:href="@{/profile}" id="mobile-profile-button" class="block px-4 py-2 text-base font-medium text-sky-400 hover:bg-slate-700">My Profile</a>
+                <a th:href="@{/orders}" class="block px-4 py-2 text-base font-medium text-sky-400 hover:bg-slate-700">My Orders</a>
+                <form th:action="@{/logout}" method="post" class="mt-2">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-red-500 hover:bg-slate-700">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- Full-Width Search Overlay/Modal (Light Blur) -->
+    <!-- Z-index changed from z-50 to z-40 to ensure the z-50 header is visible on top -->
+    <div id="search-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-md z-40 hidden transition-opacity duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20"> <!-- pt-20 added to clear the fixed header -->
+            <div class="flex items-center justify-between h-16">
+                <!-- Search Form -->
+                <form th:action="@{/search}" method="get" class="flex flex-grow mr-4">
+                    <input type="text" name="query" placeholder="Search for products, brands, or categories..."
+                           class="w-full p-3 text-lg rounded-l-lg bg-white text-slate-800 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-400 placeholder-slate-400 shadow-lg"
+                           required>
+                    <button type="submit" class="bg-sky-500 text-white p-3 rounded-r-lg hover:bg-sky-600 transition shadow-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                </form>
+
+                <!-- Close Button -->
+                <button id="close-search-button" class="text-slate-800 hover:text-sky-500 p-2 rounded-full transition duration-150 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactions (Profile, Mobile Menu, Search) -->
+    <script>
+        // Restructured JS to run immediately after the fragment is parsed,
+        // which is often more reliable than DOMContentLoaded inside fragments.
+
+        // --- 1. Profile Dropdown Toggle ---
+        const profileButton = document.getElementById('profileButton');
+        const profileMenu = document.getElementById('profileMenu');
+
+        if (profileButton && profileMenu) {
+            profileButton.addEventListener('click', function (event) {
+                profileMenu.classList.toggle('hidden');
+                event.stopPropagation();
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+                    profileMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- 2. Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // --- 3. Search Overlay Toggle ---
+        const searchButton = document.getElementById('search-button');
+        const searchOverlay = document.getElementById('search-overlay');
+        const closeSearchButton = document.getElementById('close-search-button');
+
+        if (searchButton && searchOverlay && closeSearchButton) {
+            searchButton.addEventListener('click', function () {
+                searchOverlay.classList.remove('hidden');
+                // Focus on the input field when the overlay opens
+                const searchInput = searchOverlay.querySelector('input[name="query"]');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            });
+
+            closeSearchButton.addEventListener('click', function () {
+                searchOverlay.classList.add('hidden');
+            });
+
+            // NEW: Close search overlay when clicking the backdrop
+            searchOverlay.addEventListener('click', function(event) {
+                // This checks if the click happened directly on the searchOverlay element (the blurred backdrop),
+                // ensuring clicks on the search form/input do not close it.
+                if (event.target === searchOverlay) {
+                    searchOverlay.classList.add('hidden');
+                }
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !searchOverlay.classList.contains('hidden')) {
+                    searchOverlay.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</th:block>
+
+
+
+
+</body>
+</html>

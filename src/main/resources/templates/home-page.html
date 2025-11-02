@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroMart - Premium Electronics</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import (Inter is the default for Tailwind, but good practice) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC; /* slate-50 */
+        }
+        /* Style the image container on the right side of the Hero section */
+        .hero-image-clip {
+            /* Create a custom clipping/mask effect, or just ensure sharp edges */
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+        /* Custom scrollbar for better feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94A3B8; /* slate-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9; /* slate-100 */
+        }
+
+
+    </style>
+</head>
+<body class="text-slate-900">
+
+<!-- Header & Navigation (Dark Theme) -->
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <!-- 1. Hero Section: Bold & Responsive -->
+    <section class="bg-white py-12 md:py-24 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <!-- Hero Content -->
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 leading-tight">
+                    The <span class="text-sky-500">Future</span> of Sound. <br class="hidden sm:inline">Unleashed Power.
+                </h1>
+                <p class="text-lg text-slate-600 mb-8 max-w-lg mx-auto md:mx-0">
+                    Explore our latest collection of premium gadgets, from ultra-fast laptops to noise-cancelling headphones. Tech innovation delivered.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#" class="bg-slate-900 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-slate-700 transition duration-300 transform hover:scale-105">
+                        Shop New Arrivals
+                    </a>
+                    <a href="#" class="bg-sky-500 text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-sky-600 transition duration-300">
+                        View All Categories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image -->
+            <div class="hero-image-clip relative">
+                <!-- Placeholder Image (Laptop/Monitor) -->
+                <img src="https://placehold.co/600x400/0F172A/FFFFFF?text=Premium+Tech+Display"
+                     alt="High-end laptop and smartphone display"
+                     class="rounded-3xl shadow-2xl w-full h-auto object-cover transform hover:rotate-1 transition duration-500"
+                     onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Tech+Image';"
+                >
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Shop By Category (Icon/Text Blocks) -->
+    <section class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Shop By Category</h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Category Card 1: Laptops -->
+                <a th:href="@{/products(category='Laptops')}" class="block p-6 text-center bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 group">
+                    <div class="text-sky-500 mb-3 mx-auto w-12 h-12 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m0 0h2m0 0h12v-6a2 2 0 00-2-2h-2a2 2 0 00-2 2v6m2 0h2m-6 0h-2M11 5a2 2 0 012-2h2a2 2 0 012 2v3m-2-3H9m5 0h-2"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold group-hover:text-sky-600">Laptops</h3>
+                    <p class="text-sm text-slate-500">View latest models</p>
+                </a>
+
+                <!-- Category Card 2: Headphones -->
+                <a th:href="@{/products(category='Headphones')}" class="block p-6 text-center bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 group">
+                    <div class="text-sky-500 mb-3 mx-auto w-12 h-12 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a1 1 0 110-2 1 1 0 010 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold group-hover:text-sky-600">Headphones</h3>
+                    <p class="text-sm text-slate-500">Crisp audio clarity</p>
+                </a>
+
+                <!-- Category Card 3: Smartwatches -->
+                <a th:href="@{/products(category='Wearables')}" class="block p-6 text-center bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 group">
+                    <div class="text-sky-500 mb-3 mx-auto w-12 h-12 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold group-hover:text-sky-600">Wearables</h3>
+                    <p class="text-sm text-slate-500">Track your life</p>
+                </a>
+
+                <!-- Category Card 4: Cameras -->
+                <a th:href="@{/products(category='Cameras')}" class="block p-6 text-center bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 group">
+                    <div class="text-sky-500 mb-3 mx-auto w-12 h-12 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.865-1.297a2 2 0 011.664-.89h1.86a2 2 0 011.664.89l.865 1.297a2 2 0 001.664.89H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold group-hover:text-sky-600">Photography</h3>
+                    <p class="text-sm text-slate-500">Capture the moment</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Featured Products Grid -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold">Today's Best Sellers</h2>
+                <a th:href="@{/products}" class="text-sky-600 font-medium hover:text-sky-500 transition duration-150 flex items-center">
+                    View All
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Scrollable Product Row -->
+            <!-- Scrollable Product Row -->
+            <div class="product-scroll flex flex-nowrap gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory py-4 no-scrollbar"
+                 style="scroll-behavior:smooth;">
+
+                <!-- Thymeleaf loop -->
+                <div th:each="product : ${products}"
+                     class="flex-none w-[260px] bg-white rounded-xl shadow-xl overflow-hidden group hover:shadow-2xl transition-transform duration-300 transform hover:-translate-y-1 snap-start">
+
+                    <!-- Product Image -->
+                    <div class="relative overflow-hidden h-48 bg-gray-100">
+                        <img th:src="${product.imageUrl}" alt="Product Image"
+                             class="w-full h-full object-contain group-hover:scale-105 transition duration-500"
+                             onerror="this.onerror=null;this.src='https://placehold.co/400x300?text=Product';">
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-slate-900 mb-1" th:text="${product.name}">Product Name</h3>
+                        <p class="text-sm text-slate-500 mb-3" th:text="${product.category}">Category</p>
+
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-extrabold text-sky-600" th:text="'₹' + ${product.price}">₹0</span>
+
+                            <!-- Add to Cart Button -->
+                            <form th:action="@{/addToCart(productId=${product.id})}" method="post" class="inline add-to-cart-form">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+
+                                <button type="submit"
+                                        class="bg-black text-sky-500 hover:text-sky-600 transition p-2 rounded-full focus:outline-none"
+                                        title="Add to Cart">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast Notification -->
+            <div id="cart-toast"
+                 class="hidden fixed bottom-5 right-5 bg-green-600 text-white py-2 px-4 rounded-lg shadow-lg">
+                Added to cart!
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <!-- 4. Promotional Banner/Secondary CTA -->
+    <section class="py-20 bg-sky-500/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h2 class="text-4xl font-extrabold mb-4">Summer Sale: Up to 50% Off!</h2>
+            <p class="text-xl mb-8">Don't miss out on our limited-time offer on smart home devices and accessories.</p>
+            <a th:href="@{/products}" class="bg-white text-sky-700 px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-gray-100 transition duration-300 transform hover:scale-105 inline-flex items-center">
+                Explore Deals
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer (Dark Theme) --><!-- Footer (Dark Theme) -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<!-- CSS: hide scrollbar (add inside your <style> or css file) -->
+<style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+<!-- JavaScript for Add-to-Cart AJAX -->
+<script>
+    document.querySelectorAll('.add-to-cart-form').forEach(form => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            const toast = document.getElementById('cart-toast');
+            if (response.ok) {
+                toast.textContent = "Added to cart!";
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 2000);
+            } else {
+                toast.textContent = "Failed to add to cart.";
+                toast.classList.remove('hidden');
+                toast.classList.replace('bg-green-600', 'bg-red-600');
+                setTimeout(() => toast.classList.add('hidden'), 2000);
+            }
+        });
+    });
+</script>
+<!-- JS: auto-scroll, wheel -> horizontal conversion, pause on hover/touch -->
+<script>
+    (function () {
+      const scroller = document.querySelector('.product-scroll');
+      if (!scroller) return;
+
+      // Auto-scroll settings
+      let autoScroll = true;
+      const speed = 0.5; // pixels per frame, tweak for faster/slower
+      let rafId = null;
+
+      function autoStep() {
+        if (autoScroll) {
+          // advance
+          scroller.scrollLeft += speed;
+          // loop back when reaching end
+          if (scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 1) {
+            // small delay before jumping back for user to notice end
+            scroller.scrollLeft = 0;
+          }
+        }
+        rafId = requestAnimationFrame(autoStep);
+      }
+      rafId = requestAnimationFrame(autoStep);
+
+      // Pause when user interacts
+      scroller.addEventListener('mouseenter', () => autoScroll = false);
+      scroller.addEventListener('mouseleave', () => autoScroll = true);
+      scroller.addEventListener('touchstart', () => autoScroll = false, {passive: true});
+      scroller.addEventListener('touchend', () => autoScroll = true);
+
+      // Convert vertical wheel -> horizontal scroll when over the scroller
+      scroller.addEventListener('wheel', (e) => {
+        // prefer deltaX; if mostly vertical, use vertical delta as horizontal
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          scroller.scrollLeft += e.deltaY;
+          e.preventDefault();
+        }
+        // if there is deltaX, it will naturally scroll horizontally
+      }, {passive: false});
+
+      // Optional: stop auto-scroll if user drags the scrollbar (detect pointerdown)
+      scroller.addEventListener('pointerdown', () => autoScroll = false);
+      document.addEventListener('pointerup', () => {
+        // resume after short delay to avoid immediate jump while user finishing interaction
+        setTimeout(() => autoScroll = true, 800);
+      });
+
+      // Clean-up (if your SPA creates/destroys sections)
+      window.addEventListener('beforeunload', () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      });
+    })();
+</script>
+<script>
+    // Profile dropdown toggle
+    const profileButton = document.getElementById('profileButton');
+    const profileMenu = document.getElementById('profileMenu');
+
+    if (profileButton && profileMenu) {
+        profileButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent immediate window click handler from closing it
+            profileMenu.classList.toggle('hidden');
+        });
+
+        // Close when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
+                profileMenu.classList.add('hidden');
+            }
+        });
+    }
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // close mobile menu when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

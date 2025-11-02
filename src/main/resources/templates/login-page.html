@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to CrazyCart</title>
+    <!-- Use the correct path for your CSS file -->
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<!-- ADDITION: transition-body class for fade effect -->
+<body class="transition-body">
+<div class="container">
+    <div class="left-panel">
+        <div class="login-box">
+            <h1>Welcome Back</h1>
+
+            <form class="login-form" action="#" th:action="@{/authenticateTheUser}" method="POST">
+<div th:if="${param.error}" role="alert">
+    <i>Invalid username or password. Please try again.</i>
+</div>
+<div th:if="${param.logout}" role="alert">
+    <i>You have been Logged Out</i>
+</div>
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input th:type="text" id="username" name="username" placeholder="Enter your email or username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="submit-button">
+                    Log In
+                </button>
+
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </form>
+
+            <p class="login-link">
+                Don't have an account?
+                <!-- IMPORTANT: Change href to your actual registration route -->
+                <a th:href="@{/showMyRegistrationPage}">Register Now</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL: WELCOME DETAILS (Gradient) -->
+    <div class="right-panel">
+        <div class="welcome-box">
+            <h2>Your Projects Await</h2>
+            <p>We're excited to see what you create today. Log in to continue where you left off!</p>
+
+            <div class="stat-list">
+                <div class="stat-item">
+                    <i class="fas fa-project-diagram icon-white"></i>
+                    <h3>500k+</h3>
+                    <p>Projects Managed</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-users-cog icon-white"></i>
+                    <h3>10k+</h3>
+                    <p>Active Teams</p>
+                </div>
+            </div>
+
+            <div class="quote">
+                <p>"Efficient, intuitive, and secure—CrazyCart changed how we work."</p>
+                <span>— Michael S., Tech Lead</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADDITION: Link to transition script -->
+<script src="/js/transition.js"></script>
+</body>
+</html>

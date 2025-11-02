@@ -1,0 +1,270 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f8f8;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    /* Added a slight box shadow for definition */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- LEFT PANEL (Form) --- */
+.left-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 10; /* Ensure form is always on top */
+}
+
+.reg-box {
+    max-width: 450px;
+    padding: 40px;
+    text-align: left;
+}
+
+.reg-box h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.reg-box p {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* --- FORM STYLES --- */
+
+.reg-form {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px; /* Slightly reduced margin for more fields */
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+.submit-button {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 1.1em;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+.submit-button:hover {
+    background-color: #3A7BBF;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.login-link a {
+    color: #4A90E2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- RIGHT PANEL (Details/Features) --- */
+.right-panel {
+    flex: 1.2;
+    /* Using a subtle, abstract gradient background */
+    background: linear-gradient(135deg, #4A90E2 0%, #7ED321 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    position: relative;
+    color: white;
+}
+
+.feature-box {
+    max-width: 500px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.15); /* Semi-transparent white overlay */
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    text-align: center;
+}
+
+.feature-box h2 {
+    font-size: 2.2em;
+    margin-bottom: 40px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.feature-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.feature-item {
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+}
+
+.feature-item i {
+    font-size: 1.8em;
+    margin-right: 20px;
+    padding-top: 5px;
+}
+
+.feature-item h3 {
+    font-size: 1.25em;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.feature-item p {
+    font-size: 0.95em;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.icon-blue { color: #A6E3FF; }
+.icon-green { color: #D2FFAD; }
+.icon-red { color: #FFB3B3; }
+
+
+.quote {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.quote p {
+    font-style: italic;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.quote span {
+    font-size: 0.85em;
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+.terms {
+    font-size: 0.85em;
+    color: #999;
+    margin-top: 30px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Responsive Adjustments for Smaller Screens */
+@media (max-width: 950px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-panel {
+        flex: auto;
+        min-height: 100vh;
+    }
+
+    .right-panel {
+        display: none; /* Hide the detailed features on mobile */
+    }
+
+    .reg-box {
+        max-width: 90%;
+        margin: 0 auto;
+        padding: 40px 20px;
+        text-align: left;
+    }
+}
+/* --- ALERT MESSAGE STYLES FOR REGISTRATION PAGE --- */
+[role="alert"] {
+    display: block;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.5s ease-in-out;
+    text-align: center;
+}
+
+/* Success message (green accent) */
+.alert-success[role="alert"],
+[role="alert"]:has(i:contains("successful")) {
+    background-color: #e6ffed;
+    border-left: 5px solid #27ae60;
+    color: #1e8449;
+}
+
+/* Error message (red accent) */
+.alert-custom-error[role="alert"],
+[role="alert"]:has(i:contains("failed")) {
+    background-color: #ffe6e6;
+    border-left: 5px solid #e74c3c;
+    color: #c0392b;
+}
+
+/* Simple fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

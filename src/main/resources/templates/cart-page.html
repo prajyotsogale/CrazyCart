@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Modern Shopping Cart</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import for better look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+    </style>
+    <script>
+        // Tailwind configuration kept for color variables
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#1e293b',
+                        'accent-blue': '#3b82f6',
+                        'accent-hover': '#2563eb',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-slate-800 flex flex-col min-h-screen">
+
+<!-- Header & Navigation (Dark Theme) - Using th:replace for your actual header fragment -->
+<header th:replace="fragments/header :: header" class="bg-primary-dark text-white shadow-lg sticky top-0 z-10">
+    <!-- Placeholder content for visual clarity if fragment isn't loaded -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex-shrink-0">
+                <span class="text-xl font-extrabold tracking-wider">E-COMMERCE (Header Placeholder)</span>
+            </div>
+            <nav class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-4">
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700">Home</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium bg-slate-700 text-white">Cart</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700">Profile</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content Area -->
+<main class="flex-grow">
+    <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 mt-6">
+        <h1 class="text-4xl font-extrabold text-slate-900 mb-8 border-b pb-2">Your Shopping Cart</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cart Items List (LG: 2/3 width) -->
+            <div class="lg:col-span-2 space-y-4">
+
+                <!-- EMPTY CART STATE (th:if checks if the list is empty) -->
+                <div th:if="${#lists.isEmpty(cartItems)}" class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
+                    <p class="text-xl text-center text-gray-500">Your cart is currently empty. Start shopping now!</p>
+                    <div class="mt-4 text-center">
+                        <a href="/" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-accent-blue hover:bg-accent-hover transition duration-300">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CART ITEM LOOP (th:each iterates through the list) -->
+                <div th:each="item : ${cartItems}"
+                     class="flex items-center p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-100">
+
+                    <!-- Product Image Placeholder -->
+                    <div class="w-16 h-16 mr-4 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img th:src="${item.product.imageUrl}"
+                             alt="Product"
+                             class="w-full h-full object-contain"
+                             onerror="this.onerror=null;this.src='https://placehold.co/100x100?text=No+Image';">
+                    </div>
+
+
+                    <!-- Product Info (Main Area) -->
+                    <div class="flex-grow min-w-0">
+                        <!-- Display Product Name -->
+                        <p class="font-bold text-lg text-slate-800 truncate" th:text="${item.product.name}"></p>
+
+                        <!-- Display Price (Formatted with Rupee symbol) -->
+                        <p class="text-sm text-gray-500">Price:
+                            <span th:text="'₹' + ${#numbers.formatDecimal(item.product.price, 0, 2)}">₹99.99</span>
+                        </p>
+
+                        <!-- Quantity Controls -->
+                        <div class="flex items-center space-x-2 mt-2 text-sm">
+                            <span class="text-gray-600 font-medium mr-2">Quantity:</span>
+
+                            <!-- Decrease Button -->
+                            <!-- Uses th:href conditional to prevent linking when quantity is 1 -->
+                            <a th:href="${item.quantity > 1} ? @{/decreaseQuantity(productId=${item.product.id})} : '#'"
+                               th:classappend="${item.quantity == 1} ? 'text-gray-400 cursor-not-allowed bg-gray-50' : 'text-gray-700 hover:bg-gray-100'"
+                               class="p-1 border border-gray-300 rounded-md transition duration-150">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                </svg>
+                            </a>
+
+
+                            <!-- Quantity Display -->
+                            <span class="text-base font-semibold text-slate-700 w-6 text-center" th:text="${item.quantity}">1</span>
+
+                            <!-- Increase Button -->
+                            <a th:href="@{/increaseQuantity(productId=${item.product.id})}"
+                               class="p-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition duration-150">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Item Subtotal (Formatted with Rupee symbol) -->
+                    <div class="text-right mx-4 hidden sm:block">
+                        <p class="text-sm text-gray-500">Item Total</p>
+                        <p class="font-bold text-lg text-green-600">
+                            <span th:text="'₹' + ${#numbers.formatDecimal(item.product.price * item.quantity, 0, 2)}">₹129.99</span>
+                        </p>
+                    </div>
+
+                    <!-- Remove Link (Improved Hitbox) -->
+                    <div class="ml-4">
+                        <a th:href="@{/removeFromCart(productId=${item.id})}"
+                           class="remove-item-btn text-red-500 hover:text-red-700 font-medium transition duration-200 p-3 rounded-xl hover:bg-red-100/50"
+                           title="Remove Item">
+                            <!-- Trash Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V8z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary (LG: 1/3 width) -->
+            <div class="lg:col-span-1" th:if="${not #lists.isEmpty(cartItems)}">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 sticky top-20">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-3 text-slate-700">Order Summary</h2>
+
+                    <div class="space-y-2 text-gray-600">
+                        <div class="flex justify-between">
+                            <span>Subtotal:</span>
+                            <!-- Display Subtotal (Formatted with Rupee symbol and 2 decimals) -->
+                            <span class="font-medium text-slate-800" th:text="'₹' + ${#numbers.formatDecimal(subtotal, 0, 2)}">₹700.49</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Shipping (Standard):</span>
+                            <!-- Updated hardcoded shipping placeholder to Rupee -->
+                            <span class="font-medium text-slate-800">₹50.00</span>
+                        </div>
+                        <div class="flex justify-between border-t pt-3 mt-3 text-lg font-bold text-slate-900">
+                            <span>Order Total:</span>
+                            <!-- Display Grand Total (Formatted with Rupee symbol and 2 decimals) -->
+                            <span th:text="'₹' + ${#numbers.formatDecimal(total, 0, 2)}">₹750.49</span>
+                        </div>
+                    </div>
+                    <form th:action="@{/placeOrder}" method="post">
+                        <button type="submit"
+                                class="mt-6 w-full py-3 bg-accent-blue text-white font-semibold rounded-lg shadow-md hover:bg-accent-hover transition duration-300">
+                            Proceed to Checkout
+                        </button>
+                    </form>
+                    <p class="text-sm text-center text-gray-400 mt-3">Taxes calculated at checkout.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer (Dark Theme) - Using th:replace for your actual footer fragment -->
+<footer th:replace="fragments/footer :: footer" class="bg-primary-dark text-gray-400 mt-12 py-8">
+    <!-- Placeholder content for visual clarity if fragment isn't loaded -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p>&copy; 2024 E-Commerce Store. All rights reserved. (Footer Placeholder)</p>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-white transition duration-200">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition duration-200">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
